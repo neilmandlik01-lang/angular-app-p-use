@@ -26,7 +26,11 @@
           [class.change-background]="birthdayStore.games()[j].status == gameStatusEnum.UNLOCKED"
           [class.cursor-default]="birthdayStore.games()[j].status != gameStatusEnum.UNLOCKED"
         >
-        Click
+        {{birthdayStore.games()[j].status == gameStatusEnum.UNLOCKED
+          ? '🔓'
+          : birthdayStore.games()[j].status == gameStatusEnum.COMPLETED
+          ? '✅'
+          : '🔒'}}
       </button>
       }
 
