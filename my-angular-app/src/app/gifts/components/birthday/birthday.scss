@@ -1,0 +1,194 @@
+.full-height {
+  height: 100dvh;
+  border-left: 0.2rem solid #f0eefb;
+  border-right: 0.2rem solid #f0eefb;
+}
+
+.letter-col {
+  position: relative;                 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.letter-design {
+  font-size: 25rem;
+  color: #8b7cf0;
+  font-family: 'Manrope';
+  font-weight: 300;
+  cursor: default;
+  transition: transform 0.4s ease;
+}
+
+.border-icon {
+  position: absolute;
+  top: 50%;
+  right: -27px;                       /* sits ON the border */
+  transform: translateY(-50%);
+  padding: 6px;
+  border-radius: 50%;
+  background-color: #f7f6fd;
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.change-background{
+    background-color: #e6e0fb;
+}
+
+.cursor-default{
+    cursor: default;
+}
+
+.increase-width {
+  min-width: 800px;
+}
+
+.box{
+  border: solid 0.1rem black;
+  width: 50px;
+  height: 50px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.wrong-letter {
+  background-color: #787c7e;  /* Wordle gray */
+  border-color: #787c7e;
+  color: #ffffff;             /* WHITE TEXT */
+}
+
+.wrong-place {
+  background-color: #c9b458;
+  border-color: #c9b458;
+  color: #ffffff;             /* WHITE TEXT */
+}
+
+.correct-letter {
+  background-color: #6aaa64;
+  border-color: #6aaa64;
+  color: #ffffff;             /* WHITE TEXT */
+}
+
+.real-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  caret-color: transparent;
+}
+
+.connection-box{
+  height: 72px;
+  border-radius: 12px;
+  border: 1px solid #d3d3c9;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  user-select: none;
+
+  transition: 
+    background-color 0.15s ease,
+    transform 0.05s ease,
+    box-shadow 0.15s ease;
+}
+
+.normal-connection-color {
+  background-color: #efefe6;
+  &:hover{
+    background-color: #E9E7F8;
+  }
+}
+
+
+.selected-connection-color {
+  background-color: #D3D3D3;
+
+  &:hover {
+    background-color: #CFCBF1;
+  }
+}
+
+.row:focus {
+  outline: none; /* fallback */
+}
+
+.row:focus-visible {
+  outline: none;
+}
+
+.easy-guess {
+  background-color: #F7DA21;
+}
+.low-guess {
+  background-color: #9FD63A;
+}
+.medium-guess {
+  background-color: #00A2B3;;
+}
+.high-guess {
+  background-color: #8B7CF0;
+}
+
+.completed-box {
+  border-radius: 0.75rem;
+  margin: 10px;
+}
+
+.connection-text {
+  font-family: "Franklin Gothic Medium", Arial, sans-serif;
+  font-size: clamp(0.5rem, 1.2vw, 0.9rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #121212;
+}
+
+.nyt-btn {
+  background: #f3f2f9;            /* soft neutral */
+  border: 1px solid #d6d3e8;
+  color: #2b2b2b;
+
+  padding: 10px 16px;
+  border-radius: 999px;          /* pill shape */
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+  cursor: pointer;
+}
+
+.nyt-btn:hover {
+  background: #e9e7f8;
+  border-color: #cfcbea;
+}
+
+.nyt-btn:active {
+  transform: scale(0.97);
+}
+
+.life {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: grey;
+}
+
+.adjust-dimensions{
+  height: 260px;
+  width: 190px;
+}
+
+.para-design {
+  font-size: 2.3rem;
+  font-family: 'Dancing Script';
+  transition: transform 0.4s ease;
+}

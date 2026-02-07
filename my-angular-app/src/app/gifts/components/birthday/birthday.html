@@ -1,0 +1,270 @@
+<div class="row">
+  @for (i of name; track $index; let j = $index) {
+
+    <div class="col-3 full-height letter-col">
+      
+      @if(birthdayStore.games()[j] && birthdayStore.games()[j].status==gameStatusEnum.COMPLETED && birthdayStore.isModalClosed()[birthdayStore.games()[j].number]){
+        <p class="para-design m-2">
+          {{messages[j]}}
+        </p>
+      }
+      @else {
+        @if(j==birthdayStore.games().length && birthdayStore.games()[j-1].status==gameStatusEnum.COMPLETED && birthdayStore.isModalClosed()[birthdayStore.games()[j-1].number]){
+          <p class="para-design m-2">
+            {{messages[j]}}
+          </p>
+        }
+        @else {
+          <p class="letter-design">{{ i }}</p>
+        }
+      }
+      
+      @if(birthdayStore.games()[j]){
+        <button
+          (click)="openGameModal(birthdayStore.games()[j])"
+          class="border-icon"
+          [class.change-background]="birthdayStore.games()[j].status == gameStatusEnum.UNLOCKED"
+          [class.cursor-default]="birthdayStore.games()[j].status != gameStatusEnum.UNLOCKED"
+        >
+        Click
+      </button>
+      }
+
+
+    </div>
+
+  }
+</div>
+
+<!--Wordle Modal-->
+
+<div class="modal fade" tabindex="-1" #wordleModal>
+  <!-- overlay + animation -->
+
+  <div class="modal-dialog modal-dialog-centered increase-width">
+    <!-- positioning & width -->
+
+    <div class="modal-content">
+      <!-- visible box -->
+
+      <div class="modal-header">
+        <h5 class="modal-title">Wordle</h5>
+        <button class="btn-close" (click)="onCloseModal(gameNumberEnum.WORDLE)"></button>
+      </div>
+
+      <div class="modal-body d-flex justify-content-center align-items-center">
+        <div>
+          @if (birthdayStore.wordleForm().contains('word')){
+            <form 
+              [formGroup]="birthdayStore.wordleForm()"
+              (ngSubmit)="onSubmitWordle()"
+            >
+              <input 
+                type="text"
+                formControlName="word"  
+                maxlength="5"
+                minlength="5"
+                class="real-input"
+                #wordleInput
+              >
+            </form>
+          }
+
+          @for(i of Array(birthdayStore.maxWordleAttempts()); track $index; let a = $index){
+            <div class="row gap-2">
+              @for(j of wordleAnswer; track $index; let b = $index){
+                @if(a < birthdayStore.rowNumber()-1){
+                  @if(birthdayStore.wordleGuesses().length > 0){
+                    <div 
+                      class="box d-flex justify-content-center align-items-center fs-2"
+                      [class]="birthdayStore.wordleGuesses()[a][b].status == letterStatusEnum.WRONG_LETTER
+                      ? 'wrong-letter'
+                      : birthdayStore.wordleGuesses()[a][b].status == letterStatusEnum.WRONG_PLACE
+                      ? 'wrong-place'
+                      : 'correct-letter'"
+                    >
+                      {{birthdayStore.wordleGuesses()[a][b].character}}
+                    </div>
+                  }
+                }
+                @if(a == birthdayStore.rowNumber()-1){
+                  <div class="box d-flex justify-content-center align-items-center fs-2">
+                    {{ birthdayStore.wordleForm().controls['word'].value[b]?.toUpperCase()}}
+                  </div>                
+                }      
+                @if(a > birthdayStore.rowNumber()-1){
+                  <div class="box">
+
+                  </div>
+                }                     
+              }
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <!-- <div class="modal-footer">
+        <button class="btn btn-outline-secondary">Cancel</button>
+        <button class="btn btn-primary" (click)="onSubmitModal(gameNumberEnum.WORDLE)" data-bs-dismiss="modal ">Submit</button>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+
+<!-- End Wordle Modal -->
+
+
+<!--Hangman Modal-->
+<div class="modal fade" tabindex="-1" #hangmanModal>
+  <!-- overlay + animation -->
+
+  <div class="modal-dialog modal-dialog-centered">
+    <!-- positioning & width -->
+
+    <div class="modal-content">
+      <!-- visible box -->
+
+      <div class="modal-header">
+        <h5 class="modal-title">Hangman Word</h5>
+        <button class="btn-close" (click)="onCloseModal(gameNumberEnum.HANGMAN)"></button>
+      </div>
+
+      <div class="modal-body">
+
+        
+        <div class="d-flex align-items-center">
+          <p class="m-0 me-2">
+            Tried Characters:
+          </p>
+          @if(birthdayStore.hangmanGuesses().length!=0){
+            @for(hangmanGuess of birthdayStore.hangmanGuesses();track $index){
+              {{hangmanGuess.toUpperCase()}}              
+            }
+          }
+          @else {
+            <p class="m-0">None</p>
+          }
+        </div>
+
+        @if (birthdayStore.hangmanForm().contains('character')){
+          <form
+            [formGroup]="birthdayStore.hangmanForm()"
+            (ngSubmit)="onSubmitHangman()"
+            >
+            <input type="text" minlength="1" maxlength="1" class="real-input" formControlName="character" #hangmanInput>
+          </form>
+        }
+
+          <div class="d-flex justify-content-center">
+            <div class="box d-flex justify-content-center align-items-center fs-2">
+              {{birthdayStore.hangmanForm().controls['character'].value.toUpperCase()}}
+            </div>
+          </div>
+
+          <div class="d-flex align-itmes-center justify-content-center my-3">
+            <img [src]="`/img-step-${birthdayStore.isHangmanSolved()
+            ?'success'
+            :birthdayStore.hangmanStep() <=6 
+            ?birthdayStore.hangmanStep()
+            :'failed'}.png`" alt="" class="img-fluid adjust-dimensions">
+          </div>          
+
+          <div class="d-flex gap-2 align-itmes-center">
+            @for(hangmanObj of birthdayStore.hangmanAnswerShow(); track $index){
+              <div class="box d-flex justify-content-center align-items-center fs-2">
+                @if(hangmanObj.status==letterStatusEnum.CORRECT_PLACE){
+                  {{hangmanObj.character}}
+                }                                
+              </div>
+            }
+          </div>
+
+
+      </div>
+
+      <!-- <div class="modal-footer">
+        <button class="btn btn-outline-secondary">Cancel</button>
+        <button class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmitModal(gameNumberEnum.HANGMAN)">Submit</button>
+      </div> -->
+
+    </div>
+  </div>
+</div>
+<!--Hangman Modal End-->
+
+<!--Connections Start-->
+<div class="modal fade" tabindex="-1" #connectionsModal>
+  <!-- overlay + animation -->
+
+  <div class="modal-dialog modal-dialog-centered">
+    <!-- positioning & width -->
+
+    <div class="modal-content">
+      <!-- visible box -->
+
+      <div class="modal-header">
+        <h5 class="modal-title">Connections</h5>
+        <button class="btn-close" (click)="onCloseModal(gameNumberEnum.CONNECTIONS)"></button>
+      </div>
+
+      <div class="modal-body">       
+        <div class="row d-flex justify-content-center">
+          @for(guess of birthdayStore.completedCards();track $index){
+            <div 
+              class="col-11 completed-box d-flex justify-content-center align-items-center"
+              [class]="guess.difficulty == difficultyEnum.EASY
+              ?'easy-guess'
+              :guess.difficulty == difficultyEnum.LOW
+              ?'low-guess'
+              :guess.difficulty == difficultyEnum.MEDIUM
+              ?'medium-guess'
+              :guess.difficulty == difficultyEnum.HIGH
+              ?'high-guess'
+              :''"
+            >
+              <div class="col-10">
+                <p class="d-flex justify-content-center m-0 mt-3">{{guess.relationText}}</p>
+                <div class="d-flex justify-content-center m-1 mb-1">
+                  @for(text of guess.guesses;track $index;let j = $index){
+                    <p>{{text}}</p>
+                    @if(j!=guess.guesses.length-1){
+                      <span>,</span> &nbsp;
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="row" (keydown.enter)="onConnectionsSubmit()" tabindex="0" #connectionsInput>
+          @for(box of birthdayStore.connections();track $index;let i = $index){ 
+            <div 
+              class="col-3"
+              (click)="toggleSelection(i)"
+            >
+              <div class="connection-box m-1" [class]="birthdayStore.connections()[i].isSelected?'selected-connection-color':'normal-connection-color'">
+                <p class="connection-text m-2">{{box.text}}</p>
+              </div>
+            </div>           
+          }
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+          @for(life of Array(birthdayStore.livesLeft());track $index){
+            <div class="life"></div>
+          }
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+          <button type="button" class="nyt-btn" (click)="resetConnections()">Reset</button>
+          <button type="button" class="nyt-btn" (click)="shuffleConnections()">Shuffle</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!--Connections End-->

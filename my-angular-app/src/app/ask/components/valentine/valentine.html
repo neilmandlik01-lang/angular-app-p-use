@@ -1,0 +1,39 @@
+@if(sheSayYes()){
+    <div class="final-screen">
+        <div class="card">
+            <h1>Thank you ❤️</h1>
+            <h2>Happy Propose Day 💍</h2>
+            <p>I’m really glad it’s you.</p>
+        </div>
+    </div>
+}
+@else {
+
+<div class="page">
+  <div class="card-before">
+    <h1>Will you be my Valentine? 💘</h1>
+
+    <div class="buttons m-0 mt-5">
+      <button 
+        #changeButton
+        class="no-btn" 
+        (click)="saidYes()"
+        (mouseenter)="swap1ToYes()"
+        (touchstart)="swap1ToYes()"
+        >
+        No
+      </button>
+
+      <button
+        #changeButton
+        class="no-btn"
+        (click)="saidYes()"
+        (mouseenter)="swap2ToYes()"
+        (touchstart)="swap2ToYes()"
+      >
+        Yes
+      </button>
+    </div>
+  </div>
+</div>
+}
